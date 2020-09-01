@@ -10,7 +10,6 @@ import utility.ConfigurationReader;
 import utility.DB_Utility;
 
 import java.util.List;
-
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -90,6 +89,17 @@ public class SpartanApiDB_Practice {
         int resultCount =  response.path("numberOfElements") ;
         //int resultCount =  response.jsonPath().getInt("numberOfElements") ;
         System.out.println("resultCount = " + resultCount);
+        // try at home , parameterize what you search for gender and name
+        // in both query param and this db query
+        String query = "SELECT * FROM SPARTANS     " +
+                " WHERE LOWER(gender) = 'female'  " +
+                " and LOWER(name) LIKE '%a%' ";
+        DB_Utility.runQuery(query);
+        int expectedResult = DB_Utility.getRowCount() ;
+        // this is using junit assertion , you can use hamcrest if you want.
+        assertEquals(expectedResult,resultCount);
+
+
 
     }
 
@@ -116,11 +126,6 @@ public class SpartanApiDB_Practice {
         // the jsonpath to get the list and the Data type of the List you want ! -->> String.class
         List<String> idListFromResponse = response.jsonPath().getList("content.id" , String.class) ;
 
-//        int resultCount =  response.path("numberOfElements") ;
-        //int resultCount =  response.jsonPath().getInt("numberOfElements") ;
-//        System.out.println("resultCount = " + resultCount);
-        // try at home , parameterize what you search for gender and name
-        // in both query param and this db query
         String query = "SELECT * FROM SPARTANS     " +
                 " WHERE LOWER(gender) = 'female'  " +
                 " and LOWER(name) LIKE '%a%' ";
