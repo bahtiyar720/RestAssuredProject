@@ -16,11 +16,45 @@ import static org.hamcrest.Matchers.*;
 
 public class SpartanPostRequestExtractingSpecTest {
 
+    static RequestSpecification validPostRequestSpec;
+    static ResponseSpecification validPostResponseSpec ;
+
+
     @BeforeAll
     public static void init(){
         RestAssured.baseURI = "http://54.160.106.84";
         RestAssured.port = 8000;
         RestAssured.basePath = "/api";
+        // preparing the body for request spec
+        Spartan randomSp = createRandomSpartanObject();
+        validPostRequestSpec = given()
+                .auth().basic("admin","admin")
+                .accept(ContentType.JSON)   // what type you want from the server as response
+                .contentType(ContentType.JSON) // what type you are sending to the server
+                .body(randomSp)
+                .log().all();
+
+        ResponseSpecBuilder resSpecBuilder = new ResponseSpecBuilder();
+        validPostResponseSpec  =    resSpecBuilder
+                .expectStatusCode(201)
+                .expectHeader("Date", notNullValue(String.class) )
+                .log(LogDetail.ALL)
+                .expectBody("success", is("A Spartan is Born!") )
+                .expectBody("data.name" , is( randomSp.getName() )  )
+                .expectBody("data.gender" , is( randomSp.getGender() )  )
+                .expectBody("data.phone" , is( randomSp.getPhone() )  )
+                .expectBody("data.id" ,  notNullValue() )
+                .build();
+        ;
+
+//                                .body("success",is("A Spartan is Born!") )
+////                .body("data.name" , is(  randomSp.getName()  )   )
+////                .body("data.gender" , is(  randomSp.getGender()  )   )
+////                .body("data.phone" , is(  randomSp.getPhone()  )   )
+////                .body("data.id", notNullValue() )
+
+
+
     }
 
     @DisplayName("Extracting the requestSpec and responseSpec practice")
@@ -28,6 +62,29 @@ public class SpartanPostRequestExtractingSpecTest {
     public void test(){
         // make a post request and assert the status code header and body
         // eventually extract out the spec for reuse
+
+        Spartan randomSp = createRandomSpartanObject();
+
+        // validPostRequestSpec
+        // so we want to add the auth , contentType , randomBody , logging
+        // into the request spec
+
+        given()
+                .spec(validPostRequestSpec).
+                when()
+                .post("/spartans").
+                then()
+                .spec(validPostResponseSpec)
+//                .log().all()
+//                .statusCode(201)
+//                .header("Date" , notNullValue() )
+//                .body("success",is("A Spartan is Born!") )
+//                .body("data.name" , is(  randomSp.getName()  )   )
+//                .body("data.gender" , is(  randomSp.getGender()  )   )
+//                .body("data.phone" , is(  randomSp.getPhone()  )   )
+//                .body("data.id", notNullValue() )
+        ;
+
     }
 
 

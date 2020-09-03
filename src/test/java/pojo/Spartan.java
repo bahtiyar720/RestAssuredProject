@@ -1,6 +1,8 @@
 package pojo;
-
+// a class for Plain Old Java Object (POJO)
+// to represent data
 public class Spartan {
+
     private String name;
     private String gender;
     private long phone;
@@ -12,6 +14,15 @@ public class Spartan {
         this.name = name;
         this.gender = gender;
         this.phone = phone;
+    }
+
+    @Override
+    public String toString() {
+        return "Spartan{" +
+                "name='" + name + '\'' +
+                ", gender='" + gender + '\'' +
+                ", phone=" + phone +
+                '}';
     }
 
     public String getName() {
