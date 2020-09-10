@@ -3,15 +3,19 @@ package day10;
 import io.restassured.RestAssured;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import pojo.Category;
+import pojo.User;
 import utility.ConfigurationReader;
 import utility.LibraryUtil;
 
+import java.util.List;
 import java.util.Map;
 
 import static io.restassured.RestAssured.*;
@@ -50,9 +54,21 @@ public class LibraryAppReusingTheSpecification_Shorter {
     @Test
     public void testLibrary(){
 
-        when()
-                .get("/get_book_categories")
-        ;
+        Response response = when()
+                .get("/get_book_categories");
+        List<Category> categoryList = response.jsonPath().getList("", Category.class) ;
+        System.out.println("categoryList = " + categoryList);
+
+        // above code is great , but what if I wanted to
+        // store each category as map rather than pojo
+        // Each category is key value pair --->> Map
+        // and we have many category  --->> List<Map>
+        // jsonPath methods always try to help to convert the types where it can
+        // in this case , each category in jsonArray we tryied to store into map then get a list out of it
+        // and Jackson databind take care of all conversion
+        //List< Map<String,String> > categoryMapList = response.jsonPath().getList("");
+        List< Map<Integer,String> > categoryMapList = response.jsonPath().getList("");
+        System.out.println("categoryMapList = " + categoryMapList);
 
     }
 
@@ -61,8 +77,10 @@ public class LibraryAppReusingTheSpecification_Shorter {
     public void testGetAllUsers(){
 
 
-        when()
-                .get(" /get_all_users");
+        Response response =  when().get(" /get_all_users");
+        JsonPath jp = response.jsonPath();
+        List<User> allUserLst = jp.getList("", User.class) ;
+        System.out.println("allUserLst = " + allUserLst);
 
     }
 

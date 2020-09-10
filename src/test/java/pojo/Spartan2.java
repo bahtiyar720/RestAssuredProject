@@ -1,16 +1,16 @@
 package pojo;
 
-public class SpartanJan {
+public class Spartan2 {
     private int id ;
     private String name ;
     private String gender ;
     private long phone ;
 
-    public SpartanJan(){
+    public Spartan2(){
         // does not do anything but required for Jackson to work if any other constructor is provided
     }
 
-    public SpartanJan(int id, String name, String gender, long phone) {
+    public Spartan2(int id, String name, String gender, long phone) {
         this.id = id;
         this.name = name;
         this.gender = gender;

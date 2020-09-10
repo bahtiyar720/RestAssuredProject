@@ -6,7 +6,7 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import pojo.SpartanJan;
+import pojo.Spartan2;
 
 import java.util.List;
 
@@ -50,7 +50,7 @@ public class JasonToPojo_Practice {
          * into  new Spartan2(261,"Elma","Male",9999999998L) Java Object
          * so we can work with the data using java object directly
          */
-        SpartanJan sp = response.as( SpartanJan.class ) ;
+        Spartan2 sp = response.as( Spartan2.class ) ;
         // above line is almost as if you are doing below line
 //        Spartan2 sp = new Spartan2(261,"Elma","Male",9999999998L)
         System.out.println("sp = " + sp);
@@ -81,7 +81,7 @@ public class JasonToPojo_Practice {
         //  second parameter to provide the type you want to store as  : Spartan2.class
         // eventually it will work just like  new Spartan(317,'Robert',Male,3252645223)
 
-        SpartanJan firstMaleSpartan = jp.getObject("content[0]", SpartanJan.class) ;
+        Spartan2 firstMaleSpartan = jp.getObject("content[0]", Spartan2.class) ;
         //System.out.println("firstMaleSpartan = " + firstMaleSpartan);
         System.out.println("The Spartan id from POJO is "       + firstMaleSpartan.getId() );
         System.out.println("The Spartan name from POJO is "     + firstMaleSpartan.getName() );
@@ -108,7 +108,7 @@ public class JasonToPojo_Practice {
         System.out.println(names);
 
         // Store the entire jsonArray as list of spartan2
-        List<SpartanJan> spartanJansList = jp.getList("content" , SpartanJan.class) ;
+        List<Spartan2> spartanJansList = jp.getList("content" , Spartan2.class) ;
 
         System.out.println("spartanJanList = " + spartanJansList);
 //        for( SpartanJan each : spartanJanList ){
